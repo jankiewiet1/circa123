@@ -1,0 +1,25 @@
+name: Extract Zip
+
+on:
+  workflow_dispatch:
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Extract ZIP
+        run: |
+          unzip circa_project.zip -d temp
+          cp -r temp/Circav2/* .
+          rm -rf temp
+          rm circa_project.zip
+          
+      - name: Commit extracted files
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add .
+          git commit -m "Extract project files from zip"
+          git push
